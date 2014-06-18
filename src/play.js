@@ -18,6 +18,7 @@ Game.Play.prototype = {
 	play.player = game.add.sprite(Game.w / 2, Game.h / 2, 'player');
 	play.player.imageWidth = 18;
 	play.player.anchor.setTo(0.5, 0.5);
+	play.player.scale.setTo(0.5, 0.5);
 	game.physics.arcade.enable(play.player);
 	play.player.acceleration = acceleration;
 	play.player.body.drag.setTo(drag, drag);
@@ -43,10 +44,19 @@ Game.Play.prototype = {
     },
 
     generateEnemy: function (velocity) {
-	var x, y, width, theta, vel, enemy;
+	var x, y, widths, width, theta, vel, enemy;
 	vel = {};
+	widths = [
+	    Math.floor(play.player.width / 1.5),
+	    Math.floor(play.player.width / 1.5),
+	    Math.floor(play.player.width / 1.5),
+	    Math.floor(play.player.width / 1.5),
+	    Math.floor(play.player.width * 1),
+	    Math.floor(play.player.width * 1),
+	    Math.floor(play.player.width * 1.5),
+	];
 
-	width = 9;
+	width = widths[Math.rand(widths.length)];
 
 	switch (Math.rand(4)) {
 	case 0:
@@ -78,9 +88,9 @@ Game.Play.prototype = {
 	vel.x = velocity * Math.cos(theta);
 	vel.y = velocity * Math.sin(theta);
 
-	enemy = play.enemies.create(x, y, 'player');
+	enemy = play.enemies.create(x, y, 'enemy');
 	enemy.imageWidth = 18;
-	enemy.scale.setTo(0.5, 0.5);
+	enemy.scale.setTo(width / enemy.imageWidth, width / enemy.imageWidth);
 	enemy.anchor.setTo(0.5, 0.5);
 	enemy.body.velocity = vel;
 	
