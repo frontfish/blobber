@@ -17,7 +17,8 @@ Game.Play.prototype = {
 
 	play.player = game.add.sprite(Game.w / 2, Game.h / 2, 'player');
 	play.player.imageWidth = 18;
-	play.player.anchor.setTo(0.5, 0.5);
+	play.player.initialWidth = 9;
+	play.player.anchor.setTo(play.player.initialWidth / play.player.imageWidth, play.player.initialWidth / play.player.imageWidth);
 	play.player.scale.setTo(0.5, 0.5);
 	game.physics.arcade.enable(play.player);
 	play.player.acceleration = acceleration;
@@ -55,18 +56,21 @@ Game.Play.prototype = {
 	var x, y, widths, width, theta, vel, enemy;
 	vel = {};
 	widths = [
-	    Math.floor(play.player.width / 1.5),
-	    Math.floor(play.player.width / 1.5),
-	    Math.floor(play.player.width / 1.5),
-	    Math.floor(play.player.width / 1.5),
+	    Math.floor(play.player.initialWidth * 0.66),
+	    Math.floor(play.player.initialWidth * 1),
+	    Math.floor(play.player.initialWidth * 2),
+	    Math.floor(play.player.initialWidth * 4),
+	    Math.floor(play.player.initialWidth * 8),
+	    Math.floor(play.player.width * 0.66),
+	    Math.floor(play.player.width * 0.66),
 	    Math.floor(play.player.width * 1),
 	    Math.floor(play.player.width * 1),
-	    Math.floor(play.player.width * 1),
+	    Math.floor(play.player.width * 1.2),
 	];
 
 	width = widths[Math.rand(widths.length)];
 
-	switch (Math.rand(4)) {
+	switch (Math.rand(2)) {
 	case 0:
 	    x = 0 - Math.ceil(width / 2);
 	    y = Math.rand(Game.h);
@@ -107,10 +111,10 @@ Game.Play.prototype = {
 
     enemyBoundary: function (enemy) {
 	if (enemy.x - enemy.width / 2 < 0) { // left boundary
-	    enemy.body.velocity.x = Math.abs(enemy.body.velocity.x);
+//	    enemy.body.velocity.x = Math.abs(enemy.body.velocity.x);
 	}
 	if (enemy.x + enemy.width / 2 > Game.w) { // right boundary
-	    enemy.body.velocity.x = -Math.abs(enemy.body.velocity.x);
+//	    enemy.body.velocity.x = -Math.abs(enemy.body.velocity.x);
 	}
 	if (enemy.y - enemy.height / 2 < 0) { // top boundary
 	    enemy.body.velocity.y = Math.abs(enemy.body.velocity.y);
