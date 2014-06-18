@@ -28,6 +28,8 @@ Game.Play.prototype = {
 	play.enemies = game.add.group();
 	play.enemies.enableBody = true;
 	play.enemiesCreated = 0;
+
+	play.scoreText = game.add.text(10, 10, 'score: 0', { font: '20px Arial', fill: '#aaa' });
     },
     
     update: function () {
@@ -45,6 +47,8 @@ Game.Play.prototype = {
 	}
 
 	this.controls();
+
+	play.scoreText.text = 'score: ' + Math.floor((play.player.area() - 81) / 18);
     },
 
     generateEnemy: function (velocity) {
@@ -57,7 +61,7 @@ Game.Play.prototype = {
 	    Math.floor(play.player.width / 1.5),
 	    Math.floor(play.player.width * 1),
 	    Math.floor(play.player.width * 1),
-	    Math.floor(play.player.width * 1.5),
+	    Math.floor(play.player.width * 1.2),
 	];
 
 	width = widths[Math.rand(widths.length)];
@@ -125,8 +129,12 @@ Game.Play.prototype = {
 	if (eater !== food) {
 	    newEaterWidth = Math.sqrt(eater.area() + food.area() / 2);
 	    
+	    // velocity is changed to conserve momentum as if mass was conserved
+	    eater.body.velocity.x = (eater.area() * eater.body.velocity.x + food.area() * food.body.velocity.x) / (eater.area() + food.area());
+	    eater.body.velocity.y = (eater.area() * eater.body.velocity.y + food.area() * food.body.velocity.y) / (eater.area() + food.area());
+
 	    eater.scale.setTo(newEaterWidth / eater.imageWidth, newEaterWidth / eater.imageWidth);
-	    
+
 	    food.kill();
 	}
     },
