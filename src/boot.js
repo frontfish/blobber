@@ -14,3 +14,7 @@ Game.Boot.prototype = {
 	game.state.start('Load');
     }
 };
+
+Math.rand = function (max) {
+    return Math.floor(Math.random() * max);
+};
