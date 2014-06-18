@@ -40,6 +40,10 @@ Game.Play.prototype = {
 	    this.generateEnemy(play.enemySpeed);
 	}
 
+	if (!play.player.alive) {
+	    this.endGame();
+	}
+
 	this.controls();
     },
 
@@ -152,4 +156,8 @@ Game.Play.prototype = {
 	    play.player.body.acceleration.y = 0;
 	}
     },
+
+    endGame: function () {
+	game.state.start('Play');
+    }
 };
