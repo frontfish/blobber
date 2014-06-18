@@ -61,7 +61,7 @@ Game.Play.prototype = {
 	    Math.floor(play.player.width / 1.5),
 	    Math.floor(play.player.width * 1),
 	    Math.floor(play.player.width * 1),
-	    Math.floor(play.player.width * 1.2),
+	    Math.floor(play.player.width * 1),
 	];
 
 	width = widths[Math.rand(widths.length)];
