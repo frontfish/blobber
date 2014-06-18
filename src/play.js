@@ -1,6 +1,8 @@
 Game.Play = function (game) { };
 
-var play = { };
+var play = {
+    enemySpeed: 100,
+};
 
 Game.Play.prototype = {
     create: function () {
@@ -14,6 +16,7 @@ Game.Play.prototype = {
 	play.cursors = game.input.keyboard.createCursorKeys();
 
 	play.player = game.add.sprite(Game.w / 2, Game.h / 2, 'player');
+	play.player.imageWidth = 18;
 	play.player.anchor.setTo(0.5, 0.5);
 	game.physics.arcade.enable(play.player);
 	play.player.acceleration = acceleration;
@@ -23,36 +26,44 @@ Game.Play.prototype = {
 
 	play.enemies = game.add.group();
 	play.enemies.enableBody = true;
+	play.enemiesCreated = 0;
     },
     
     update: function () {
-	game.physics.arcade.overlap(play.player, play.enemies, this.destroyEnemy, null, this);
+	game.physics.arcade.overlap(play.player, play.enemies, this.eat, null, this);
+	game.physics.arcade.overlap(play.enemies, play.enemies, this.eat, null, this);
 
-	this.generateEnemy(200);
+	play.enemies.forEachAlive(this.enemyBoundary, this);
+
+	if (game.time.now - play.startTime > 500 * play.enemiesCreated) {
+	    this.generateEnemy(play.enemySpeed);
+	}
 
 	this.controls();
     },
 
     generateEnemy: function (velocity) {
-	var x, y, theta, vel, enemy;
+	var x, y, width, theta, vel, enemy;
 	vel = {};
+
+	width = 9;
 
 	switch (Math.rand(4)) {
 	case 0:
-	    x = 0;
+	    x = 0 - Math.ceil(width / 2);
 	    y = Math.rand(Game.h);
 	    break;
 	case 1:
-	    x = Game.w;
+	    x = Game.w + Math.ceil(width / 2);
 	    y = Math.rand(Game.h);
 	    break;
 	case 2:
 	    x = Math.rand(Game.w);
-	    y = 60;
+	    y = 0 - Math.ceil(width / 2);
 	    break;
 	case 3:
 	    x = Math.rand(Game.w);
-	    y = Game.h;
+	    y = Game.h + Math.ceil(width / 2);
 	    break;
 	}
 
@@ -68,14 +79,42 @@ Game.Play.prototype = {
 	vel.y = velocity * Math.sin(theta);
 
 	enemy = play.enemies.create(x, y, 'player');
+	enemy.imageWidth = 18;
 	enemy.scale.setTo(0.5, 0.5);
+	enemy.anchor.setTo(0.5, 0.5);
 	enemy.body.velocity = vel;
-
-	console.log('enemy: ' + x + ', ' + y + '       ' + (180 * theta / Math.PI).toPrecision(2));
+	
+	play.enemiesCreated++;
     },
 
-    destroyEnemy: function (player, enemy) {
-	enemy.destroy();
+    enemyBoundary: function (enemy) {
+	if (enemy.x - enemy.width / 2 < 0) { // left boundary
+	    enemy.body.velocity.x = Math.abs(enemy.body.velocity.x);
+	}
+	if (enemy.x + enemy.width / 2 > Game.w) { // right boundary
+	    enemy.body.velocity.x = -Math.abs(enemy.body.velocity.x);
+	}
+	if (enemy.y - enemy.height / 2 < 0) { // top boundary
+	    enemy.body.velocity.y = Math.abs(enemy.body.velocity.y);
+	}
+	if (enemy.y + enemy.height / 2 > Game.h) { // bottom boundary
+	    enemy.body.velocity.y = -Math.abs(enemy.body.velocity.y);
+	}
+    },
+
+    eat: function (obj1, obj2) {
+	var eater, food, newEaterWidth;
+
+	eater = obj1.area() >= obj2.area() ? obj1 : obj2;
+	food = obj1 === eater ? obj2 : obj1;
+
+	if (eater !== food) {
+	    newEaterWidth = Math.sqrt(eater.area() + food.area() / 2);
+	    
+	    eater.scale.setTo(newEaterWidth / eater.imageWidth, newEaterWidth / eater.imageWidth);
+	    
+	    food.kill();
+	}
     },
 
     controls: function () {

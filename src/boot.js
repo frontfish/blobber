@@ -18,3 +18,7 @@ Game.Boot.prototype = {
 Math.rand = function (max) {
     return Math.floor(Math.random() * max);
 };
+
+Phaser.Sprite.prototype.area = function () {
+    return this.width * this.height; 
+};
