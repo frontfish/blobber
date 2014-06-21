@@ -15,6 +15,9 @@ Game.Play.prototype = {
 	game.physics.startSystem(Phaser.Physics.Arcade);
 	play.cursors = game.input.keyboard.createCursorKeys();
 
+	play.restartKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
+	play.restartKey.onDown.add(this.endGame, this);
+
 	play.player = game.add.sprite(Game.w / 2, Game.h / 2, 'purple');
 	play.player.imageWidth = 18;
 	play.player.initialWidth = play.level.initialPlayerWidth;
@@ -53,6 +56,12 @@ Game.Play.prototype = {
 
 	play.scoreText.text = this.calcScore() + ' / ' + play.level.scoreGoal;
 	play.levelText.text = (play.levelIndex + 1) + ' / ' + Game.levels.length;
+
+	if (this.calcScore() >= play.level.scoreGoal) {
+	    console.log('winner!');
+	    play.scoreText.fill = '#caf';
+	    play.scoreText.fontSize = 21;
+	}
     },
 
     generateEnemy: function (velocity) {
@@ -187,14 +196,9 @@ Game.Play.prototype = {
     },
 
     endGame: function () {
-	var nextStage = 'Play';
-
 	if (this.calcScore() >= play.level.scoreGoal) {
-	    if (play.levelIndex >= Game.levels.length - 1) {
-		nextStage = 'End';
-	    }
 	    play.levelIndex++;
 	}
-	game.state.start(nextStage);
+	game.state.start('End');
     },
 };
