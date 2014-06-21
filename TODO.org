@@ -1,0 +1,10 @@
+- Game
+    Different enemy colors
+    Additional levels
+- Audio
+    Music
+    Sound effects
+- Screens
+    Load
+    Menu
+    End
