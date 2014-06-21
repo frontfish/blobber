@@ -1,14 +1,14 @@
 Game.Play = function (game) { };
 
 var play = {
-    enemySpeed: 100,
+    levelIndex: 0,
 };
 
 Game.Play.prototype = {
     create: function () {
-	var drag = 200;
-	var maxVelocity = 200;
-	var acceleration = 500;
+	play.level = Game.levels[play.levelIndex];
+
+	game.stage.backgroundColor = play.level.backgroundColor;
 
 	play.startTime = game.time.now;
 
@@ -17,20 +17,22 @@ Game.Play.prototype = {
 
 	play.player = game.add.sprite(Game.w / 2, Game.h / 2, 'player');
 	play.player.imageWidth = 18;
-	play.player.initialWidth = 9;
-	play.player.anchor.setTo(play.player.initialWidth / play.player.imageWidth, play.player.initialWidth / play.player.imageWidth);
-	play.player.scale.setTo(0.5, 0.5);
+	play.player.initialWidth = play.level.initialPlayerWidth;
+	play.player.scale.setTo(play.player.initialWidth / play.player.imageWidth, play.player.initialWidth / play.player.imageWidth);
+	play.player.anchor.setTo(0.5, 0.5);
 	game.physics.arcade.enable(play.player);
-	play.player.acceleration = acceleration;
-	play.player.body.drag.setTo(drag, drag);
-	play.player.body.maxVelocity.setTo(maxVelocity, maxVelocity);
+	play.player.acceleration = play.level.acceleration;
+	play.player.body.drag.setTo(play.level.drag, play.level.drag);
+	play.player.body.maxVelocity.setTo(play.level.maxVelocity, play.level.maxVelocity);
 	play.player.body.collideWorldBounds = true;
 
 	play.enemies = game.add.group();
 	play.enemies.enableBody = true;
 	play.enemiesCreated = 0;
 
-	play.scoreText = game.add.text(10, 10, 'score: 0', { font: '20px Arial', fill: '#aaa' });
+	play.scoreText = game.add.text(10, 10, '', { font: '20px Arial', fill: '#aaa' });
+	play.levelText = game.add.text(Game.w - 5, 5, '', { font: '12px Arial', fill: '#aaa' });
+	play.levelText.anchor.x = 1;
     },
     
     update: function () {
@@ -40,7 +42,7 @@ Game.Play.prototype = {
 	play.enemies.forEachAlive(this.enemyBoundary, this);
 
 	if (game.time.now - play.startTime > 500 * play.enemiesCreated) {
-	    this.generateEnemy(play.enemySpeed);
+	    this.generateEnemy(play.level.enemySpeed);
 	}
 
 	if (!play.player.alive) {
@@ -49,41 +51,31 @@ Game.Play.prototype = {
 
 	this.controls();
 
-	play.scoreText.text = 'score: ' + Math.floor((play.player.area() - 81) / play.player.initialWidth * 0.66);
+	play.scoreText.text = this.calcScore() + ' / ' + play.level.scoreGoal;
+	play.levelText.text = (play.levelIndex + 1) + ' / ' + Game.levels.length;
     },
 
     generateEnemy: function (velocity) {
 	var x, y, widths, width, theta, vel, enemy;
 	vel = {};
-	widths = [
-	    Math.floor(play.player.initialWidth * 0.66),
-	    Math.floor(play.player.initialWidth * 1),
-	    Math.floor(play.player.initialWidth * 2),
-	    Math.floor(play.player.initialWidth * 4),
-	    Math.floor(play.player.initialWidth * 8),
-	    Math.floor(play.player.width * 0.66),
-	    Math.floor(play.player.width * 0.66),
-	    Math.floor(play.player.width * 1),
-	    Math.floor(play.player.width * 1),
-	    Math.floor(play.player.width * 1),
-	];
+	widths = play.level.getEnemyWidths();
 
 	width = widths[Math.rand(widths.length)];
 
-	switch (Math.rand(2)) {
-	case 0:
+	switch (play.level.getSpawnSide()) {
+	case 'left':
 	    x = 0 - Math.ceil(width / 2);
 	    y = Math.rand(Game.h);
 	    break;
-	case 1:
+	case 'right':
 	    x = Game.w + Math.ceil(width / 2);
 	    y = Math.rand(Game.h);
 	    break;
-	case 2:
+	case 'top':
 	    x = Math.rand(Game.w);
 	    y = 0 - Math.ceil(width / 2);
 	    break;
-	case 3:
+	case 'bottom':
 	    x = Math.rand(Game.w);
 	    y = Game.h + Math.ceil(width / 2);
 	    break;
@@ -111,16 +103,25 @@ Game.Play.prototype = {
 
     enemyBoundary: function (enemy) {
 	if (enemy.x - enemy.width / 2 < 0) { // left boundary
-//	    enemy.body.velocity.x = Math.abs(enemy.body.velocity.x);
+	    if (play.level.hardBoundaries.left) {
+		enemy.body.velocity.x = Math.abs(enemy.body.velocity.x);
+	    }
 	}
-	if (enemy.x + enemy.width / 2 > Game.w) { // right boundary
-//	    enemy.body.velocity.x = -Math.abs(enemy.body.velocity.x);
+	else if (enemy.x + enemy.width / 2 > Game.w) { // right boundary
+	    if (play.level.hardBoundaries.right) {
+		enemy.body.velocity.x = -Math.abs(enemy.body.velocity.x);
+	    }
 	}
+
 	if (enemy.y - enemy.height / 2 < 0) { // top boundary
-	    enemy.body.velocity.y = Math.abs(enemy.body.velocity.y);
+	    if (play.level.hardBoundaries.top) {
+		enemy.body.velocity.y = Math.abs(enemy.body.velocity.y);
+	    }
 	}
-	if (enemy.y + enemy.height / 2 > Game.h) { // bottom boundary
-	    enemy.body.velocity.y = -Math.abs(enemy.body.velocity.y);
+	else if (enemy.y + enemy.height / 2 > Game.h) { // bottom boundary
+	    if (play.level.hardBoundaries.bottom) {
+		enemy.body.velocity.y = -Math.abs(enemy.body.velocity.y);
+	    }
 	}
     },
 
@@ -134,8 +135,8 @@ Game.Play.prototype = {
 	    newEaterWidth = Math.sqrt(eater.area() + food.area() / 2);
 	    
 	    // velocity is changed to conserve momentum as if mass was conserved
-	    eater.body.velocity.x = (eater.area() * eater.body.velocity.x + food.area() * food.body.velocity.x) / Math.pow(newEaterWidth, 2);//(eater.area() + food.area());
-	    eater.body.velocity.y = (eater.area() * eater.body.velocity.y + food.area() * food.body.velocity.y) / Math.pow(newEaterWidth, 2);//(eater.area() + food.area());
+	    eater.body.velocity.x = (eater.area() * eater.body.velocity.x + food.area() * food.body.velocity.x) / (eater.area() + food.area());
+	    eater.body.velocity.y = (eater.area() * eater.body.velocity.y + food.area() * food.body.velocity.y) / (eater.area() + food.area());
 
 	    eater.scale.setTo(newEaterWidth / eater.imageWidth, newEaterWidth / eater.imageWidth);
 
@@ -168,8 +169,24 @@ Game.Play.prototype = {
 	    play.player.body.acceleration.y = 0;
 	}
     },
+    
+    calcScore: function () {
+	var area, initial, divisor;
+
+	area = play.player.area();
+	initial = Math.pow(play.player.initialWidth, 2);
+	divisor = 18;
+
+	return Math.floor((area - initial) / divisor);
+    },
 
     endGame: function () {
+	if (this.calcScore() >= play.level.scoreGoal) {
+	    if (play.levelIndex >= Games.levels.length) {
+		game.state.start('End');
+	    }
+	    play.levelIndex++;
+	}
 	game.state.start('Play');
-    }
+    },
 };
