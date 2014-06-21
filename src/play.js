@@ -1,7 +1,7 @@
 Game.Play = function (game) { };
 
 var play = {
-    levelIndex: 1,
+    levelIndex: 0,
 };
 
 Game.Play.prototype = {
@@ -93,7 +93,6 @@ Game.Play.prototype = {
 	vel.y = velocity * Math.sin(theta);
 
 	enemy = play.enemies.create(x, y, play.level.enemyColor);
-	console.log(play.level.enemyColor);
 	enemy.imageWidth = 18;
 	enemy.scale.setTo(width / enemy.imageWidth, width / enemy.imageWidth);
 	enemy.anchor.setTo(0.5, 0.5);
