@@ -1,6 +1,4 @@
 - Game
-  + Different enemy colors
-  + Additional levels
   + "Create your own level"
   + Audio
     * Music
