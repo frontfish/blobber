@@ -3,7 +3,7 @@ Game.Load = function (game) { };
 Game.Load.prototype = {
     preload: function () {
 	// create loading screen
-	game.stage.backgroundColor = "#eee";
+	game.stage.backgroundColor = "#ddd";
 
 	// load everything
 	game.load.image('player', 'assets/img/player.png');

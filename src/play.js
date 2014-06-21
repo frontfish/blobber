@@ -49,7 +49,7 @@ Game.Play.prototype = {
 
 	this.controls();
 
-	play.scoreText.text = 'score: ' + Math.floor((play.player.area() - 81) / 18);
+	play.scoreText.text = 'score: ' + Math.floor((play.player.area() - 81) / play.player.initialWidth * 0.66);
     },
 
     generateEnemy: function (velocity) {
@@ -65,7 +65,7 @@ Game.Play.prototype = {
 	    Math.floor(play.player.width * 0.66),
 	    Math.floor(play.player.width * 1),
 	    Math.floor(play.player.width * 1),
-	    Math.floor(play.player.width * 1.2),
+	    Math.floor(play.player.width * 1),
 	];
 
 	width = widths[Math.rand(widths.length)];
@@ -134,8 +134,8 @@ Game.Play.prototype = {
 	    newEaterWidth = Math.sqrt(eater.area() + food.area() / 2);
 	    
 	    // velocity is changed to conserve momentum as if mass was conserved
-	    eater.body.velocity.x = (eater.area() * eater.body.velocity.x + food.area() * food.body.velocity.x) / (eater.area() + food.area());
-	    eater.body.velocity.y = (eater.area() * eater.body.velocity.y + food.area() * food.body.velocity.y) / (eater.area() + food.area());
+	    eater.body.velocity.x = (eater.area() * eater.body.velocity.x + food.area() * food.body.velocity.x) / Math.pow(newEaterWidth, 2);//(eater.area() + food.area());
+	    eater.body.velocity.y = (eater.area() * eater.body.velocity.y + food.area() * food.body.velocity.y) / Math.pow(newEaterWidth, 2);//(eater.area() + food.area());
 
 	    eater.scale.setTo(newEaterWidth / eater.imageWidth, newEaterWidth / eater.imageWidth);
 
