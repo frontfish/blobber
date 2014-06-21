@@ -7,5 +7,5 @@ Game.End.prototype = {
 
     update: function () {
 
-    }
+    },
 };

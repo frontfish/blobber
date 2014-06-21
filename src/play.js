@@ -1,7 +1,7 @@
 Game.Play = function (game) { };
 
 var play = {
-    levelIndex: 0,
+    levelIndex: 1,
 };
 
 Game.Play.prototype = {
@@ -15,7 +15,7 @@ Game.Play.prototype = {
 	game.physics.startSystem(Phaser.Physics.Arcade);
 	play.cursors = game.input.keyboard.createCursorKeys();
 
-	play.player = game.add.sprite(Game.w / 2, Game.h / 2, 'player');
+	play.player = game.add.sprite(Game.w / 2, Game.h / 2, 'purple');
 	play.player.imageWidth = 18;
 	play.player.initialWidth = play.level.initialPlayerWidth;
 	play.player.scale.setTo(play.player.initialWidth / play.player.imageWidth, play.player.initialWidth / play.player.imageWidth);
@@ -41,7 +41,7 @@ Game.Play.prototype = {
 
 	play.enemies.forEachAlive(this.enemyBoundary, this);
 
-	if (game.time.now - play.startTime > 500 * play.enemiesCreated) {
+	if (game.time.now - play.startTime > play.level.enemySpawnRate * play.enemiesCreated) {
 	    this.generateEnemy(play.level.enemySpeed);
 	}
 
@@ -92,7 +92,8 @@ Game.Play.prototype = {
 	vel.x = velocity * Math.cos(theta);
 	vel.y = velocity * Math.sin(theta);
 
-	enemy = play.enemies.create(x, y, 'enemy');
+	enemy = play.enemies.create(x, y, play.level.enemyColor);
+	console.log(play.level.enemyColor);
 	enemy.imageWidth = 18;
 	enemy.scale.setTo(width / enemy.imageWidth, width / enemy.imageWidth);
 	enemy.anchor.setTo(0.5, 0.5);
@@ -141,6 +142,12 @@ Game.Play.prototype = {
 	    eater.scale.setTo(newEaterWidth / eater.imageWidth, newEaterWidth / eater.imageWidth);
 
 	    food.kill();
+
+	    if (eater === play.player) {
+		if (play.player.width > Game.w || play.player.height > Game.h) {
+		    player.kill();
+		}
+	    }
 	}
     },
 
@@ -177,16 +184,18 @@ Game.Play.prototype = {
 	initial = Math.pow(play.player.initialWidth, 2);
 	divisor = 18;
 
-	return Math.floor((area - initial) / divisor);
+	return Math.ceil((area - initial) / divisor);
     },
 
     endGame: function () {
+	var nextStage = 'Play';
+
 	if (this.calcScore() >= play.level.scoreGoal) {
-	    if (play.levelIndex >= Games.levels.length) {
-		game.state.start('End');
+	    if (play.levelIndex >= Game.levels.length - 1) {
+		nextStage = 'End';
 	    }
 	    play.levelIndex++;
 	}
-	game.state.start('Play');
+	game.state.start(nextStage);
     },
 };

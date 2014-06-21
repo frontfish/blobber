@@ -6,8 +6,12 @@ Game.Load.prototype = {
 	game.stage.backgroundColor = "#ddd";
 
 	// load everything
-	game.load.image('player', 'assets/img/player.png');
-	game.load.image('enemy', 'assets/img/enemy.png');
+	game.load.image('purple', 'assets/img/square-purple.png');
+	game.load.image('blue', 'assets/img/square-blue.png');
+	game.load.image('green', 'assets/img/square-green.png');
+	game.load.image('lime', 'assets/img/square-lime.png');
+	game.load.image('orange', 'assets/img/square-orange.png');
+	game.load.image('pink', 'assets/img/square-pink.png');
     },
 
     create: function () {
