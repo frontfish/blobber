@@ -1,10 +1,11 @@
 - Game
-    Different enemy colors
-    Additional levels
-- Audio
-    Music
-    Sound effects
-- Screens
-    Load
-    Menu
-    End
+  + Different enemy colors
+  + Additional levels
+  + "Create your own level"
+  + Audio
+    * Music
+    * Sound effects
+  + Screens
+    * Load
+    * Menu
+    * End
