@@ -1,5 +1,5 @@
 - Game
-  + "Create your own level"
+  + Local storage of level position
   + Audio
     * Music
     * Sound effects
