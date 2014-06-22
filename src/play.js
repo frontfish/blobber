@@ -7,6 +7,8 @@ Game.Play.prototype = {
 	localStorage.levelIndex = +localStorage.levelIndex || 0;
 	play.level = Game.levels[+localStorage.levelIndex];
 
+	play.levelWon = false;
+
 	game.stage.backgroundColor = play.level.backgroundColor;
 
 	play.startTime = game.time.now;
@@ -197,6 +199,7 @@ Game.Play.prototype = {
     endGame: function () {
 	if (this.calcScore() >= play.level.scoreGoal) {
 	    localStorage.levelIndex++;
+	    play.levelWon = true;
 	}
 	game.state.start('End');
     },
