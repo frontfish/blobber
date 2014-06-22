@@ -14,8 +14,7 @@ Game.Play.prototype = {
 	game.physics.startSystem(Phaser.Physics.Arcade);
 	play.cursors = game.input.keyboard.createCursorKeys();
 
-	play.muteKey = game.input.keyboard.addKey(Phaser.Keyboard.M);
-	play.muteKey.onDown.add(Game.Menu.prototype.toggleAudio, this);
+	Game.Menu.prototype.addMute(this);
 
 	play.player = game.add.sprite(Game.w / 2, Game.h / 2, 'purple');
 	play.player.imageWidth = 18;

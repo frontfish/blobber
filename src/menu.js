@@ -24,4 +24,9 @@ Game.Menu.prototype = {
 	    }
 	}
     },
+
+    addMute: function (that) {
+	play.muteKey = game.input.keyboard.addKey(Phaser.Keyboard.M);
+	play.muteKey.onDown.add(this.toggleAudio, that);
+    },
 };
