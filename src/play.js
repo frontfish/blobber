@@ -1,8 +1,6 @@
 Game.Play = function (game) { };
 
-var play = {
-
-};
+var play = { };
 
 Game.Play.prototype = {
     create: function () {
@@ -15,9 +13,6 @@ Game.Play.prototype = {
 
 	game.physics.startSystem(Phaser.Physics.Arcade);
 	play.cursors = game.input.keyboard.createCursorKeys();
-
-	play.restartKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
-	play.restartKey.onDown.add(this.endGame, this);
 
 	play.player = game.add.sprite(Game.w / 2, Game.h / 2, 'purple');
 	play.player.imageWidth = 18;
@@ -37,6 +32,10 @@ Game.Play.prototype = {
 	play.scoreText = game.add.text(10, 10, '', { font: '20px Arial', fill: '#aaa' });
 	play.levelText = game.add.text(Game.w - 5, 5, (+localStorage.levelIndex + 1) + ' / ' + Game.levels.length, { font: '12px Arial', fill: '#aaa' });
 	play.levelText.anchor.x = 1;
+
+	if (Game.audio) {
+	    Game.music.play('', 0, 0.5, true, false);
+	}
     },
     
     update: function () {

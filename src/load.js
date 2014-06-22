@@ -22,6 +22,10 @@ Game.Load.prototype = {
 	game.load.image('lime', 'assets/img/square-lime.png');
 	game.load.image('orange', 'assets/img/square-orange.png');
 	game.load.image('pink', 'assets/img/square-pink.png');
+
+	game.load.audio('music', 'assets/aud/Ouroboros.mp3');
+	Game.music = game.add.sound('music');
+	Game.audio = true;
     },
 
     create: function () {
