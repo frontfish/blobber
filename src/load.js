@@ -26,6 +26,8 @@ Game.Load.prototype = {
 	game.load.audio('music', 'assets/aud/Ouroboros.mp3');
 	Game.music = game.add.sound('music');
 	Game.audio = true;
+
+	game.stage.disableVisibilityChange = true;
     },
 
     create: function () {
