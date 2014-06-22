@@ -1,8 +1,8 @@
 - Game
   + Audio
-    * Music
+    * Music should start at a different part of the song depending on the level
     * Sound effects
+    * Muting
   + Screens
-    * Load
     * Menu
     * End
