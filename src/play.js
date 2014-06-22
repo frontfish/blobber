@@ -1,7 +1,7 @@
 Game.Play = function (game) { };
 
 var play = {
-    levelIndex: 0,
+    levelIndex: +localStorage.levelIndex || 0,
 };
 
 Game.Play.prototype = {
@@ -198,6 +198,7 @@ Game.Play.prototype = {
     endGame: function () {
 	if (this.calcScore() >= play.level.scoreGoal) {
 	    play.levelIndex++;
+	    localStorage.levelIndex = play.levelIndex;
 	}
 	game.state.start('End');
     },
