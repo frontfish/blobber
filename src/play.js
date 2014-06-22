@@ -1,12 +1,13 @@
 Game.Play = function (game) { };
 
 var play = {
-    levelIndex: +localStorage.levelIndex || 0,
+
 };
 
 Game.Play.prototype = {
     create: function () {
-	play.level = Game.levels[play.levelIndex];
+	localStorage.levelIndex = +localStorage.levelIndex || 0;
+	play.level = Game.levels[+localStorage.levelIndex];
 
 	game.stage.backgroundColor = play.level.backgroundColor;
 
@@ -34,7 +35,7 @@ Game.Play.prototype = {
 	play.enemiesCreated = 0;
 
 	play.scoreText = game.add.text(10, 10, '', { font: '20px Arial', fill: '#aaa' });
-	play.levelText = game.add.text(Game.w - 5, 5, '', { font: '12px Arial', fill: '#aaa' });
+	play.levelText = game.add.text(Game.w - 5, 5, (+localStorage.levelIndex + 1) + ' / ' + Game.levels.length, { font: '12px Arial', fill: '#aaa' });
 	play.levelText.anchor.x = 1;
     },
     
@@ -55,7 +56,6 @@ Game.Play.prototype = {
 	this.controls();
 
 	play.scoreText.text = this.calcScore() + ' / ' + play.level.scoreGoal;
-	play.levelText.text = (play.levelIndex + 1) + ' / ' + Game.levels.length;
 
 	if (this.calcScore() >= play.level.scoreGoal) {
 	    console.log('winner!');
@@ -197,8 +197,7 @@ Game.Play.prototype = {
 
     endGame: function () {
 	if (this.calcScore() >= play.level.scoreGoal) {
-	    play.levelIndex++;
-	    localStorage.levelIndex = play.levelIndex;
+	    localStorage.levelIndex++;
 	}
 	game.state.start('End');
     },
