@@ -58,9 +58,7 @@ Game.Play.prototype = {
 	play.scoreText.text = this.calcScore() + ' / ' + play.level.scoreGoal;
 
 	if (this.calcScore() >= play.level.scoreGoal) {
-	    console.log('winner!');
 	    play.scoreText.fill = '#caf';
-	    play.scoreText.fontSize = 21;
 	}
     },
 
