@@ -1,5 +1,4 @@
 - Game
-  + Local storage of level position
   + Audio
     * Music
     * Sound effects
