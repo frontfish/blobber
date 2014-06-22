@@ -154,7 +154,7 @@ Game.Play.prototype = {
 
 	    if (eater === play.player) {
 		if (play.player.width > Game.w || play.player.height > Game.h) {
-		    player.kill();
+		    play.player.kill();
 		}
 	    }
 	}
@@ -199,6 +199,9 @@ Game.Play.prototype = {
     endGame: function () {
 	if (this.calcScore() >= play.level.scoreGoal) {
 	    localStorage.levelIndex++;
+	    if (localStorage.levelIndex > localStorage.highestLevelIndex) {
+		localStorage.highestLevelIndex = localStorage.levelIndex;
+	    }
 	    play.levelWon = true;
 	}
 	game.state.start('End');

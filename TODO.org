@@ -6,7 +6,8 @@
     * Menu
       - Text
       - Controls
+      - Instructions
       - Attribution
       - Level selector?
     * End
-      - Text
+      - Animate text
