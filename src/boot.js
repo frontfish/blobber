@@ -7,7 +7,7 @@ Game.Boot = function (game) { };
 
 Game.Boot.prototype = {
     preload: function () {
-	// load images for loading screen
+	game.load.image('loading-color', 'assets/img/loading-color.png');
     },
 
     create: function () {

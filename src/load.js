@@ -2,8 +2,18 @@ Game.Load = function (game) { };
 
 Game.Load.prototype = {
     preload: function () {
+	var loading, loadText;
+
 	// create loading screen
-	game.stage.backgroundColor = "#ddd";
+	game.stage.backgroundColor = "#666";
+	
+	loading = game.add.sprite(Game.w / 2, Game.h / 2, 'loading-color');
+	loading.x -= loading.width / 2;
+	loading.anchor.y = 0.7;
+
+	game.load.setPreloadSprite(loading);
+
+	loadText = game.add.text(Game.w / 2 - 63, Game.h / 2 + 12, 'loading...', { font: '40px Arial', fill: '#aaaaaa' });
 
 	// load everything
 	game.load.image('purple', 'assets/img/square-purple.png');
