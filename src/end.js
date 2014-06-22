@@ -9,7 +9,7 @@ Game.End.prototype = {
 	}
 
 	end.cursors = game.input.keyboard.createCursorKeys();
-	end.cursors.up.onDown.add(function() { game.state.start('Play') }, this);
+	end.cursors.up.onDown.add(+localStorage.levelIndex === 0 && play.levelWon ? function() { game.state.start('Menu') } : function() { game.state.start('Play') }, this);
 	end.cursors.down.onDown.add(function() { game.state.start('Menu') }, this);
 	Game.Menu.prototype.addMute();
 
