@@ -22,6 +22,9 @@ Game.End.prototype = {
 
 	end.scoreText = game.add.text(10, 10, Game.Play.prototype.calcScore() + ' / ' + play.level.scoreGoal, { font: '20px Arial', fill: '#aaa' });
 
+	end.attrText = game.add.text(Game.w - 3, Game.h - 3, 'music: "Ouroboros" by Kevin Macleod (incompetech.com)', { font: '10px Arial', fill: '#aaa' });
+	end.attrText.anchor.setTo(1, 1);
+
 	if (!play.levelWon) {
 	    end.successText.text = 'Failure!';
 	    end.playText.text = 'Press UP to try again';
