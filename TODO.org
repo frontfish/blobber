@@ -3,4 +3,3 @@
     * Music should start at a different part of the song depending on the level
     * Sound effects
   + Animate text on Menu and End screens
-  + Add music attribution
