@@ -30,6 +30,23 @@ Game.Load.prototype = {
 	Game.music = game.add.sound('music');
 	Game.audio = true;
 
+	game.load.audio('die-high', 'assets/aud/die-high.wav');
+	game.load.audio('die-low', 'assets/aud/die-low.wav');
+	game.load.audio('eat-wayhigh', 'assets/aud/eat-wayhigh.wav');
+	game.load.audio('eat-high', 'assets/aud/eat-high.wav');
+	game.load.audio('eat-medium', 'assets/aud/eat-medium.wav');
+	game.load.audio('eat-low', 'assets/aud/eat-low.wav');
+	game.load.audio('eat-waylow', 'assets/aud/eat-waylow.wav');
+
+	Game.sounds = { die: {}, eat: {} };
+	Game.sounds.die.high = game.add.sound('die-high');
+	Game.sounds.die.low = game.add.sound('die-low');
+	Game.sounds.eat.wayhigh = game.add.sound('eat-wayhigh');
+	Game.sounds.eat.high = game.add.sound('eat-high');
+	Game.sounds.eat.medium = game.add.sound('eat-medium');
+	Game.sounds.eat.low = game.add.sound('eat-low');
+	Game.sounds.eat.waylow = game.add.sound('eat-waylow');
+
 	game.stage.disableVisibilityChange = true;
     },
 

@@ -91,6 +91,9 @@ Game.Menu.prototype = {
 	if (menu.validLevels[+localStorage.levelIndex - 1]) {
 	    +localStorage.levelIndex--;
 	    menu.frame.x = this.fromGridLoc(+localStorage.levelIndex);
+	    if (Game.audio) {
+		Game.levels[+localStorage.levelIndex].getEatSound().play('', 0, 0.5, false, true);
+	    }
 	}
     },
 
@@ -98,6 +101,9 @@ Game.Menu.prototype = {
 	if (menu.validLevels[+localStorage.levelIndex + 1]) {
 	    +localStorage.levelIndex++;
 	    menu.frame.x = this.fromGridLoc(+localStorage.levelIndex);
+	    if (Game.audio) {
+		Game.levels[+localStorage.levelIndex].getEatSound().play('', 0, 0.5, false, true);
+	    }
 	}
     },
 
@@ -107,6 +113,9 @@ Game.Menu.prototype = {
     },
 
     startGame: function () {
+	if (Game.audio) {
+	    Game.levels[+localStorage.levelIndex].getEatSound().play('', 0, 0.5, false, true);
+	}
 	game.state.start('Play');
     },
 };

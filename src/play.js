@@ -152,6 +152,10 @@ Game.Play.prototype = {
 	    food.kill();
 
 	    if (eater === play.player) {
+		if (Game.audio) {
+		    play.level.getEatSound().play('', 0, 0.5, false, true);
+		}
+
 		if (play.player.width > Game.w || play.player.height > Game.h) {
 		    play.player.kill();
 		}
@@ -196,14 +200,19 @@ Game.Play.prototype = {
     },
 
     endGame: function () {
+	var dieSound = Game.sounds.die.low;
 	if (this.calcScore() >= play.level.scoreGoal) {
 	    localStorage.levelIndex++;
 	    if (+localStorage.levelIndex > +localStorage.highestLevelIndex) {
 		localStorage.highestLevelIndex = localStorage.levelIndex;
 	    }
 	    play.levelWon = true;
+	    dieSound = Game.sounds.die.high;
 	}
 	Game.music.stop();
+	if (Game.audio) {
+	    dieSound.play('', 0, 0.5, false, true);
+	}
 	game.state.start('End');
     },
 };
