@@ -203,6 +203,7 @@ Game.Play.prototype = {
 	    }
 	    play.levelWon = true;
 	}
+	Game.music.stop();
 	game.state.start('End');
     },
 };
