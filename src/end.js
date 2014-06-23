@@ -13,12 +13,14 @@ Game.End.prototype = {
 	end.cursors.down.onDown.add(function() { game.state.start('Menu') }, this);
 	Game.Menu.prototype.addMute();
 
-	end.successText = game.add.text(Game.w / 2, 30, 'Success!', { font: '95px Arial', fill: '#ccc' });
+	end.successText = game.add.text(Game.w / 2, 40, 'Success!', { font: '95px Arial', fill: '#ccc' });
 	end.successText.anchor.x = 0.5;
-	end.playText = game.add.text(Game.w / 2, 200, 'Press UP to continue', { font: '33px Arial', fill: this.parseColor(play.level.enemyColor) });
+	end.playText = game.add.text(Game.w / 2, 200, 'Press UP to continue', { font: '33px Arial', fill: this.parseColor(Game.levels[localStorage.levelIndex].enemyColor || 'purple') });
 	end.playText.anchor.x = 0.5;
 	end.menuText = game.add.text(Game.w / 2, 245, 'Press DOWN to return to menu', { font: '20px Arial', fill: '#ccc' });
 	end.menuText.anchor.x = 0.5;
+
+	end.scoreText = game.add.text(10, 10, Game.Play.prototype.calcScore() + ' / ' + play.level.scoreGoal, { font: '20px Arial', fill: '#aaa' });
 
 	if (!play.levelWon) {
 	    end.successText.text = 'Failure!';
@@ -29,13 +31,15 @@ Game.End.prototype = {
 	}
 	else {	  
 	    end.successText.fill = this.parseColor('purple');
+	    end.scoreText.fill = this.parseColor('purple');
 
-	    end.beatText = game.add.text(Game.w / 2, 125, 'You beat level ' + localStorage.levelIndex, { font: '20px Arial', fill: '#ccc' });
+	    end.beatText = game.add.text(Game.w / 2, 135, 'You beat level ' + localStorage.levelIndex, { font: '20px Arial', fill: '#ccc' });
 	    end.beatText.anchor.x = 0.5
 
-	    if (+localStorage.levelIndex === 0) {
+	    if (+localStorage.levelIndex === 0 && !localStorage.gameBeat) {
 		end.beatText.text = "Congratulations, you beat the game!";
 		end.playText.fill = this.parseColor('purple');
+		localStorage.gameBeat = true;
 	    }
 	}
     },

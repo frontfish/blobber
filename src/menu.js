@@ -9,6 +9,7 @@ Game.Menu.prototype = {
     create: function () {
 	localStorage.levelIndex = localStorage.levelIndex || 0;
 	localStorage.highestLevelIndex = localStorage.highestLevelIndex || 0;
+	localStorage.gameBeat = localStorage.gameBeat || false;
 
 	menu.validLevels[0] = true;
 	if (localStorage.highestLevelIndex) {
