@@ -26,7 +26,6 @@ Game.Menu.prototype = {
 	menu.titleText.anchor.x = 0.5;
 	menu.titleText.alpha = 0;
 	menu.titleText.y = -menu.titleText.height;
-	menu.titleText.fontWeight = 'bold';
 	menu.titleText.fontSize = '80px';
 
 	menu.byText = game.add.text(Game.w - 50, 85, 'by Christopher Hinstorff', { font: '24px Arial', fill: '#ccc' });
