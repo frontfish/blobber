@@ -44,7 +44,7 @@ Game.End.prototype = {
 	    end.beatText = game.add.text(Game.w / 2, 135, 'You beat level ' + (+localStorage.levelIndex || Game.levels.length), { font: '20px Arial', fill: '#ccc' });
 	    end.beatText.anchor.x = 0.5
 
-	    if (+localStorage.levelIndex === 0 && !localStorage.gameBeat) {
+	    if (+localStorage.levelIndex === 0 && localStorage.gameBeat === 'false') {
 		end.beatText.text = "Congratulations, you beat the game!";
 		end.playText.fill = this.parseColor('purple');
 		localStorage.gameBeat = true;
