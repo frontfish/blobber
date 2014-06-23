@@ -26,6 +26,8 @@ Game.Load.prototype = {
 
 	game.load.image('frame', 'assets/img/frame.png');
 
+	game.load.image('title', 'assets/img/title.png');
+
 	game.load.audio('music', 'assets/aud/Ouroboros.mp3');
 	Game.music = game.add.sound('music');
 	Game.audio = true;
