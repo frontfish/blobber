@@ -23,6 +23,8 @@ Game.Load.prototype = {
 	game.load.image('orange', 'assets/img/square-orange.png');
 	game.load.image('pink', 'assets/img/square-pink.png');
 
+	game.load.image('grey', 'assets/img/square-grey.png');
+
 	game.load.audio('music', 'assets/aud/Ouroboros.mp3');
 	Game.music = game.add.sound('music');
 	Game.audio = true;
