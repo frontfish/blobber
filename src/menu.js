@@ -7,6 +7,9 @@ menu = {
 
 Game.Menu.prototype = {
     create: function () {
+	localStorage.levelIndex = localStorage.levelIndex || 0;
+	localStorage.highestLevelIndex = localStorage.highestLevelIndex || 0;
+
 	menu.validLevels[0] = true;
 	if (localStorage.highestLevelIndex) {
 	    for (var i = 0; i < +localStorage.highestLevelIndex; i++) {
@@ -17,6 +20,19 @@ Game.Menu.prototype = {
 	}
 	this.createLevelSquares();
 	this.addControls();
+
+	menu.titleText = game.add.text(20, 5, 'Blobber', { font: 'Arial', fill: '#caf' });
+	menu.titleText.fontWeight = 'bold';
+	menu.titleText.fontSize = '80px';
+
+	menu.byText = game.add.text(Game.w - 50, 85, 'by Christopher Hinstorff', { font: '24px Arial', fill: '#ccc' });
+	menu.byText.anchor.x = 1;
+
+	menu.instructionsText = game.add.text(15, 195, 'You are the purple square\nEat smaller squares\nAvoid bigger squares', { font: '20px Arial', fill: '#caf', align: 'left' });
+	menu.instructionsText.anchor.y = 1;
+
+	menu.controlsText = game.add.text(Game.w - 15, 195, 'Mute with M\nUse the arrow keys\nPress UP to begin', { font: '20px Arial', fill: '#ccc', align: 'right' });
+	menu.controlsText.anchor.setTo(1, 1);
     },
 
     update: function () {
@@ -29,6 +45,8 @@ Game.Menu.prototype = {
 	menu.cursors.left.onDown.add(this.moveLeft, this);
 	menu.cursors.right.onDown.add(this.moveRight, this);
 	menu.cursors.up.onDown.add(this.startGame, this);
+
+	this.addMute();
     },
 
     toggleAudio: function () {

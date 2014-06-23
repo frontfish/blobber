@@ -4,7 +4,6 @@ var play = { };
 
 Game.Play.prototype = {
     create: function () {
-	localStorage.levelIndex = +localStorage.levelIndex || 0;
 	play.level = Game.levels[+localStorage.levelIndex];
 
 	play.levelWon = false;
@@ -199,7 +198,7 @@ Game.Play.prototype = {
     endGame: function () {
 	if (this.calcScore() >= play.level.scoreGoal) {
 	    localStorage.levelIndex++;
-	    if (localStorage.levelIndex > localStorage.highestLevelIndex) {
+	    if (+localStorage.levelIndex > +localStorage.highestLevelIndex) {
 		localStorage.highestLevelIndex = localStorage.levelIndex;
 	    }
 	    play.levelWon = true;
