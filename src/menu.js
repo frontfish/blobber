@@ -22,18 +22,31 @@ Game.Menu.prototype = {
 	this.createLevelSquares();
 	this.addControls();
 
-	menu.titleText = game.add.text(20, 5, 'Blobber', { font: 'Arial', fill: '#caf' });
+	menu.titleText = game.add.text(Game.w / 2, 5, 'Blobber', { font: 'Arial', fill: '#caf' });
+	menu.titleText.anchor.x = 0.5;
+	menu.titleText.alpha = 0;
 	menu.titleText.fontWeight = 'bold';
-	menu.titleText.fontSize = '80px';
+	menu.titleText.fontSize = '0px';
 
 	menu.byText = game.add.text(Game.w - 50, 85, 'by Christopher Hinstorff', { font: '24px Arial', fill: '#ccc' });
+	menu.byText.alpha = 0;
 	menu.byText.anchor.x = 1;
 
 	menu.instructionsText = game.add.text(15, 195, 'You are the purple square\nEat smaller squares\nAvoid bigger squares', { font: '20px Arial', fill: '#caf', align: 'left' });
+	menu.instructionsText.x = -menu.instructionsText.width;
 	menu.instructionsText.anchor.y = 1;
 
 	menu.controlsText = game.add.text(Game.w - 15, 195, 'Mute with M\nUse the arrow keys\nPress UP to begin', { font: '20px Arial', fill: '#ccc', align: 'right' });
+	menu.controlsText.x = Game.w + menu.controlsText.width;
 	menu.controlsText.anchor.setTo(1, 1);
+
+	// tweening
+	game.add.tween(menu.titleText).to({ alpha: 1 }, 500, null, true, 0, 0, false);
+	game.add.tween(menu.titleText).to({ fontSize: '80px' }, 500, null, true, 0, 0, false);
+	game.add.tween(menu.byText).to({ alpha: 1 }, 1250, null, true, 500, 0, false);
+	game.add.tween(menu.instructionsText).to({ x: 15 }, 750, null, true, 1750, 0, false);
+	game.add.tween(menu.controlsText).to({ x: Game.w - 15 }, 500, null, true, 2250, 0, false);
+
     },
 
     update: function () {
@@ -77,10 +90,15 @@ Game.Menu.prototype = {
 	    menu.levelSquares[i] = game.add.sprite(20 + 75 * i, Game.h - 20, color);
 	    menu.levelSquares[i].scale.setTo(60 / 18, 60 / 18);
 	    menu.levelSquares[i].anchor.setTo(0, 1);
+
+	    menu.levelSquares[i].alpha = 0;
+	    game.add.tween(menu.levelSquares[i]).to({ alpha: 1 }, 250, null, true, 500 + i * 250, 0, false);
 	}
 
 	menu.frame = game.add.sprite(this.fromGridLoc(+localStorage.levelIndex), Game.h - 15, 'frame');
 	menu.frame.anchor.setTo(0, 1);
+	menu.frame.alpha = 0;
+	game.add.tween(menu.frame).to({ alpha: 1 }, 250, null, true, 500 + (+localStorage.levelIndex * 250), 0, false);
     },
 
     fromGridLoc: function (gridValue) {
