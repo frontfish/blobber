@@ -25,8 +25,9 @@ Game.Menu.prototype = {
 	menu.titleText = game.add.text(Game.w / 2, 5, 'Blobber', { font: 'Arial', fill: '#caf' });
 	menu.titleText.anchor.x = 0.5;
 	menu.titleText.alpha = 0;
+	menu.titleText.y = -menu.titleText.height;
 	menu.titleText.fontWeight = 'bold';
-	menu.titleText.fontSize = '0px';
+	menu.titleText.fontSize = '80px';
 
 	menu.byText = game.add.text(Game.w - 50, 85, 'by Christopher Hinstorff', { font: '24px Arial', fill: '#ccc' });
 	menu.byText.alpha = 0;
@@ -42,7 +43,7 @@ Game.Menu.prototype = {
 
 	// tweening
 	game.add.tween(menu.titleText).to({ alpha: 1 }, 500, null, true, 0, 0, false);
-	game.add.tween(menu.titleText).to({ fontSize: '80px' }, 500, null, true, 0, 0, false);
+	game.add.tween(menu.titleText).to({ y: 5 }, 500, null, true, 0, 0, false);
 	game.add.tween(menu.byText).to({ alpha: 1 }, 1250, null, true, 500, 0, false);
 	game.add.tween(menu.instructionsText).to({ x: 15 }, 750, null, true, 1750, 0, false);
 	game.add.tween(menu.controlsText).to({ x: Game.w - 15 }, 500, null, true, 2250, 0, false);
